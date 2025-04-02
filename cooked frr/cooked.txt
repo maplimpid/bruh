@@ -8,17 +8,39 @@ class User:
         self.name = name.title()
         self.choice_history = {"A": 0, "B": 0, "C": 0, "D": 0}
         self.score = 0
+        self.attempted_questions = 0
+        self.correct_answers = 0
+        self.response_times = []
+        self.streak = 0
 
     def update_choice_history(self, choice):
         self.choice_history[choice] += 1
 
     def most_chosen_option(self):
         return max(self.choice_history, key=self.choice_history.get)
-
+    
     def log_action(self, action):
         timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         with open("user_logs.txt", "a") as file:
             file.write(f"{self.name} - {action} - {timestamp}\n")
+    
+    def update_score(self, correct):
+        self.attempted_questions += 1
+        if correct:
+            self.correct_answers += 1
+            self.score += 1
+            self.streak += 1
+        else:
+            self.streak = 0
+    
+    def calculate_accuracy(self):
+        return (self.correct_answers / self.attempted_questions * 100) if self.attempted_questions else 0
+    
+    def average_response_time(self):
+        return sum(self.response_times) / len(self.response_times) if self.response_times else 0
+
+    def get_hint(self, question):
+        return f"Hint: The answer starts with '{question['answer'][0]}'"
 
 class Quiz:
     def __init__(self, subject):
@@ -65,18 +87,33 @@ class Quiz:
             for label, option in zip(option_labels, options):
                 print(f"{label}) {option}")
             
+            import time
+            start_time = time.time()
             choice = self.get_user_choice(option_labels)
+            end_time = time.time()
+            
+            response_time = end_time - start_time
+            user.response_times.append(response_time)
             user.update_choice_history(choice)
             
             if options[option_labels.index(choice)] == question["answer"]:
                 print("Correct!")
-                user.score += 1
+                user.update_score(True)
                 user.log_action(f"answered correctly: {question['question']}")
             else:
                 print(f"Wrong! Correct answer: {question['answer']}")
+                print(user.get_hint(question))
+                user.update_score(False)
                 user.log_action(f"answered incorrectly: {question['question']}")
         
-        print(f"\n{user.name}, your final score: {user.score}/{len(self.questions)}\n")
+        accuracy = user.calculate_accuracy()
+        avg_response_time = user.average_response_time()
+        print(f"\n{user.name}, your final score: {user.score}/{len(self.questions)}")
+        print(f"Accuracy: {accuracy:.2f}%")
+        print(f"Average response time: {avg_response_time:.2f} seconds")
+        print(f"Best Streak: {user.streak}\n")
+        
+        self.update_leaderboard(user)
     
     def get_user_choice(self, valid_choices):
         while True:
@@ -84,6 +121,13 @@ class Quiz:
             if choice in valid_choices:
                 return choice
             print("Invalid choice. Try again.")
+    
+    def update_leaderboard(self, user):
+        leaderboard_file = "leaderboard.txt"
+        entry = f"{user.name}: {user.score}\n"
+        with open(leaderboard_file, "a") as file:
+            file.write(entry)
+        print("Leaderboard updated!")
 
 if __name__ == "__main__":
     name = input("Enter your name: ")
@@ -98,4 +142,3 @@ if __name__ == "__main__":
         quiz.start_quiz(user)
     else:
         print("Invalid subject choice.")
-
