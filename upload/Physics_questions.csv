@@ -1,0 +1,26 @@
+question,options,answer
+What is the unit of electric current?,"['Volt','Ohm','Ampere','Watt']",Ampere
+Which law states that energy cannot be created or destroyed?,"['Newton’s First Law','Law of Conservation of Energy','Ohm’s Law','Faraday’s Law']",Law of Conservation of Energy
+What is the speed of light in a vacuum?,"['3 × 10^8 m/s','1.5 × 10^8 m/s','3 × 10^6 m/s','1.5 × 10^6 m/s']",3 × 10^8 m/s
+Which device is used to measure current?,"['Voltmeter','Ammeter','Galvanometer','Ohmmeter']",Ammeter
+What is the SI unit of force?,"['Newton','Joule','Pascal','Watt']",Newton
+What type of lens is used to correct myopia?,"['Convex','Concave','Plano-convex','Biconvex']",Concave
+Which law explains the relationship between pressure and volume of a gas?,"['Boyle’s Law','Charles’s Law','Avogadro’s Law','Hooke’s Law']",Boyle’s Law
+Who discovered the photoelectric effect?,"['Newton','Einstein','Planck','Bohr']",Einstein
+What is the frequency of AC in India?,"['50 Hz','60 Hz','100 Hz','25 Hz']",50 Hz
+Which wave does not require a medium to travel?,"['Sound wave','Water wave','Light wave','Mechanical wave']",Light wave
+What is the escape velocity on Earth?,"['11.2 km/s','9.8 km/s','5 km/s','15 km/s']",11.2 km/s
+Which physical quantity is scalar?,"['Velocity','Acceleration','Mass','Force']",Mass
+What is the dimensional formula of power?,"['ML^2T^-3','MLT^-2','ML^2T^-2','ML^3T^-2']",ML^2T^-3
+What is the value of gravitational constant (G)?,"['6.67×10^-11 N m²/kg²','9.8 N/kg','1.6×10^-19 C','3×10^8 m/s']",6.67×10^-11 N m²/kg²
+What is Ohm's Law?,"['V = IR','F = ma','P = VI','E = mc^2']",V = IR
+What is the SI unit of pressure?,"['Pascal','Newton','Joule','Watt']",Pascal
+Who formulated the laws of planetary motion?,"['Newton','Kepler','Galileo','Einstein']",Kepler
+What is the value of acceleration due to gravity on Earth?,"['9.8 m/s²','8.9 m/s²','10 m/s²','9.2 m/s²']",9.8 m/s²
+Which phenomenon explains the blue color of the sky?,"['Reflection','Refraction','Scattering','Diffraction']",Scattering
+What type of mirror is used in car headlights?,"['Concave','Convex','Plane','Parabolic']",Concave
+What is the work done when displacement is zero?,"['Maximum','Zero','Negative','Infinite']",Zero
+What is the magnetic field inside a solenoid?,"['Non-uniform','Zero','Uniform','Oscillating']",Uniform
+What is the unit of magnetic flux?,"['Tesla','Weber','Henry','Farad']",Weber
+What is the time period of a simple pendulum dependent on?,"['Mass','Length','Amplitude','Density']",Length
+What is the value of Planck's constant?,"['6.63×10^-34 Js','3×10^8 m/s','9.8 m/s²','1.6×10^-19 C']",6.63×10^-34 Js
