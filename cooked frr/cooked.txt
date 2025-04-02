@@ -1,0 +1,101 @@
+import os
+import pandas as pd
+import random
+from datetime import datetime
+
+class User:
+    def __init__(self, name):
+        self.name = name.title()
+        self.choice_history = {"A": 0, "B": 0, "C": 0, "D": 0}
+        self.score = 0
+
+    def update_choice_history(self, choice):
+        self.choice_history[choice] += 1
+
+    def most_chosen_option(self):
+        return max(self.choice_history, key=self.choice_history.get)
+
+    def log_action(self, action):
+        timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        with open("user_logs.txt", "a") as file:
+            file.write(f"{self.name} - {action} - {timestamp}\n")
+
+class Quiz:
+    def __init__(self, subject):
+        self.subject = subject.title()
+        self.questions = self.load_questions()
+
+    def load_questions(self):
+        file_path = f"{self.subject}_questions.csv"
+        if os.path.exists(file_path):
+            df = pd.read_csv(file_path)
+            return df.to_dict(orient="records")
+        else:
+            print(f"No questions found for {self.subject}")
+            return []
+
+    def shuffle_options(self, question, avoid_option=None):
+        options = eval(question["options"])
+        correct_answer = question["answer"]
+        
+        if avoid_option and correct_answer in options:
+            options.remove(correct_answer)
+            options = random.sample(options, len(options))
+            options.insert(random.randint(0, 2), correct_answer)
+        else:
+            random.shuffle(options)
+        
+        question["shuffled_options"] = options
+        return question
+    
+    def start_quiz(self, user):
+        if not self.questions:
+            print("No questions available.")
+            return
+        
+        print(f"\nStarting {self.subject} Quiz for {user.name}\n")
+        
+        for q_no, question in enumerate(self.questions, 1):
+            avoid_option = user.most_chosen_option()
+            question = self.shuffle_options(question, avoid_option)
+            print(f"{q_no}. {question['question']}")
+            
+            options = question["shuffled_options"]
+            option_labels = ["A", "B", "C", "D"]
+            for label, option in zip(option_labels, options):
+                print(f"{label}) {option}")
+            
+            choice = self.get_user_choice(option_labels)
+            user.update_choice_history(choice)
+            
+            if options[option_labels.index(choice)] == question["answer"]:
+                print("Correct!")
+                user.score += 1
+                user.log_action(f"answered correctly: {question['question']}")
+            else:
+                print(f"Wrong! Correct answer: {question['answer']}")
+                user.log_action(f"answered incorrectly: {question['question']}")
+        
+        print(f"\n{user.name}, your final score: {user.score}/{len(self.questions)}\n")
+    
+    def get_user_choice(self, valid_choices):
+        while True:
+            choice = input("Enter your choice (A, B, C, D): ").strip().upper()
+            if choice in valid_choices:
+                return choice
+            print("Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    name = input("Enter your name: ")
+    user = User(name)
+    
+    print("Choose a subject: 1) Biology 2) Physics 3) Chemistry 4) Maths")
+    subjects = ["Biology", "Physics", "Chemistry", "Maths"]
+    subject_choice = int(input("Enter choice (1-4): ")) - 1
+    
+    if 0 <= subject_choice < len(subjects):
+        quiz = Quiz(subjects[subject_choice])
+        quiz.start_quiz(user)
+    else:
+        print("Invalid subject choice.")
+
